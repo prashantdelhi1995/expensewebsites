@@ -17,7 +17,7 @@ app.use((req,res,next)=>{
 
 (async () => {
     try {
-      await sequelize.sync({force:true});
+      await sequelize.sync();
       app.listen(3000, () => {
         console.log('Server is running on port 3000');
       });

@@ -23,6 +23,26 @@ route.post("/user/signup",async(req,res,next)=>{
 
 
     });
+    route.post("/user/login",async(req,res,next)=>{
+      const {email,password}=req.body;
+      console.log("*********......."  ,email, password)
+      try {
+  
+        const loginUser = await Signup.findOne({ where: { email: email, password: password } });
+
+          if (loginUser) {
+              return res.status(201).send('user log in successfully');
+            }
+            else {
+              res.send("incorrect id or password")
+            }
+            
+          
+        } catch (error) {
+          console.error('email id and password is incorrect:', error);
+          res.status(500).json({ error: 'Error log in user.' });
+        } })
+      
 route.get("/",(req,res)=>{
     res.send("<h1>hiii everyone</h1>")
 })
