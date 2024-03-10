@@ -10,6 +10,10 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     })
     .then(function(response) {
         console.log('Signup successful:', response.data);
+       
+        document.getElementById('email').value = "";
+        document.getElementById('password').value = "";
+        document.getElementById('name').value = "";
         alert('Signup successful!');
         // Redirect or do something else after successful signup
     })

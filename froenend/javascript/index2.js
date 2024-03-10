@@ -10,8 +10,11 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     })
     .then(function(response) {
         //console.log('login successful:', response.data);
-        if(response.status==201){
+        if(response.status==200){
         alert('login successful!');
+        document.getElementById('email').value = "";
+        document.getElementById('password').value = "";
+
         }
         else{
                alert(response.data)
