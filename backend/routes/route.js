@@ -4,6 +4,12 @@ const {Sequelize, DataTypes}= require("sequelize");
 const sequelize= require("../util/database")
 const Signup= require("../modal/signup")
 const bcrypt = require("bcrypt");
+const jwt=require("jsonwebtoken");
+function generateAccessToken(id, email) {
+  return jwt.sign({ userId: id, email: email }, "secretKey");
+}
+
+
 route.post("/user/signup",async(req,res,next)=>{
     const {name,email,password}=req.body;
     console.log("*********.......",name  ,email, password)
@@ -28,6 +34,8 @@ route.post("/user/signup",async(req,res,next)=>{
 
 
     });
+
+
     route.post("/user/login",async(req,res,next)=>{
       const {email,password}=req.body;
       console.log("*********......."  ,email, password)
@@ -47,6 +55,7 @@ route.post("/user/signup",async(req,res,next)=>{
                 return res.status(200).json({
                   success: true,
                   message: "Login Successful!",
+                  token: generateAccessToken(user.id, user.email)
                 
                 });
               } else {

@@ -3,6 +3,10 @@ const bodyParser=require("body-parser");
 const sequelize= require ("./util/database.js");
 const {Sequelize, DataTypes}= require("sequelize");
 const route= require("./routes/route");
+const expenseroute= require("./routes/expenseroute");
+const SignUp=require("./modal/signup");
+const Expense=require("./modal/expense")
+
 const app= express();
 const cors=require("cors");
 app.use(cors())
@@ -10,9 +14,13 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(route);
+app.use(expenseroute);
 app.use((req,res,next)=>{
     res.send("<h2>wrong page...</h2>")
 });
+
+SignUp.hasMany(Expense);
+Expense.belongsTo(SignUp);
 
 
 (async () => {
