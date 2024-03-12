@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>expense tracker</title>
+  </head>
+
+  <body>
+    <button id="buyPremium" onclick="handleOnClick(event)" >Buy buyPremium</button>
+
+
+    <form method="POST" action="/add-expense" id="form">
+      <label for="amount" id="amount">amount:</label>
+      <input type="number" id="amountinput" name="amountinput" />
+
+      <label for="description" id="description">description:</label>
+      <input type="text" id="descriptioninput" name="descriptioninput" />
+      <select name="choose" id="categories">
+        <option value="#" selected>choose one of them</option>
+        <option value="fuel" id="fuel" name="fuel" >fuel</option>
+        <option value="medical" id="medical" name="medical" >medical</option>
+        <option value="travel" id="travel" name="travel" >travel</option>
+        <option value="movie" id="movie" name="movies" >Movies</option>
+      </select>
+      <input type="submit" value="add" id="submit" />
+    </form>
+
+    <div id="#">
+      <ul id="expenseList"></ul>
+    </div>
+    <!-- Add script in head -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../javascript/expense.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </body>
+</html>

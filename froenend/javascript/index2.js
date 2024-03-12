@@ -1,5 +1,6 @@
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
+   
 
     const formData = new FormData(this);
 
@@ -12,6 +13,9 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         //console.log('login successful:', response.data);
         if(response.status==200){
         alert('login successful!');
+        console.log(response.data)
+        localStorage.setItem("token",response.data.token)
+        window.location.href = '../html/expense.html';
         document.getElementById('email').value = "";
         document.getElementById('password').value = "";
 
@@ -21,9 +25,8 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 
         }
          
-    })
-    .catch(function(error) {
-        alert("incorrect email or password")
+    }).catch(function(error) {
+        alert("incorrect email or password  123",err)
      
         
     });

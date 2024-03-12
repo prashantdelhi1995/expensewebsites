@@ -14,9 +14,10 @@ const Signup = sequelize.define('SignUp', {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isPremiumUser: Sequelize.BOOLEAN,
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
+    }
   });
   module.exports=Signup;

@@ -15,6 +15,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
         document.getElementById('password').value = "";
         document.getElementById('name').value = "";
         alert('Signup successful!');
+        window.location.href = '../html/login.html';
         // Redirect or do something else after successful signup
     })
     .catch(function(error) {
