@@ -8,6 +8,7 @@ const SignUp=require("./modal/signup");
 const Expense=require("./modal/expense")
 const Order=require("./modal/orderModel.js")
 const Premium=require("./routes/purchaseMemberShip")
+const Leadorboard=require("./routes/leadorboard")
 
 const app= express();
 const cors=require("cors");
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(route);
 app.use(expenseroute);
 app.use("/purchase",Premium)
+app.use(Leadorboard);
 app.use((req,res,next)=>{
     res.send("<h2>wrong page...</h2>")
 });

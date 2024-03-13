@@ -5,7 +5,7 @@ const middleware=require("../middleware/middleware")
 const express = require('express');
 const router = express.Router();
 
-router.get('/get-expense', middleware , appcontroller.getExpense )
+router.get('/get-expense', middleware , appcontroller.getExpense );
 router.post('/add-expense', middleware , appcontroller.postExpense );
 router.put('/edit-expense/:id', appcontroller.putExpense );
 router.delete('/delete-expense/:id', appcontroller.DeleteExpense);

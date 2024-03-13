@@ -80,6 +80,27 @@ axios.delete(`http://localhost:3000/delete-expense/${id}`).then(res=>{
     // Add your delete logic here
     console.log('Deleting expense with ID:', id);
 }
+async function handleLeadorboard(event){
+  const res=await axios.get("http://localhost:3000/leaderboardrd")
+  const ul=document.getElementById("leaderboard");
+  ul.innerHTML="";
+  console.log(res.data)
+  res.data.forEach((expenseDetails)=>{
+    const name=  expenseDetails.name;
+  const totalExpense= expenseDetails.total_expense
+  const li=document.createElement("li");
+  li.innerHTML=` ${name} ${totalExpense}`
+ 
+  ul.appendChild(li)
+
+  })
+ 
+  
+}
+
+
+
+
 
 async function handleOnClick(event){
     console.log("click")
@@ -105,10 +126,22 @@ async function handleOnClick(event){
 
       console.log(res);
       alert(
-        "Welcome to our Premium Membership, You have now access to Premium exclusive Reports and LeaderBoard"
+        `Welcome to our Premium Membership,
+         You have now access to Premium exclusive
+          Reports and LeaderBoard`
       );
      
       localStorage.setItem("token", res.data.token);
+      const buyPremium=document.getElementById("buyPremium");
+      buyPremium.style.visibility = "hidden";
+      document.getElementById("message").innerHTML="You are a premium user"
+     
+
+
+
+
+
+
     },
   };
   const rzp1 = new Razorpay(options);
@@ -117,6 +150,36 @@ async function handleOnClick(event){
 
 
 }
+window.addEventListener("DOMContentLoaded",()=>{
+  function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  
+    return JSON.parse(jsonPayload);
+  }
+ 
+  
+
+
+   const isPremiumUser=parseJwt(token).isPremiumUser
+   if (isPremiumUser){
+    const buyPremium=document.getElementById("buyPremium");
+    buyPremium.style.visibility = "hidden";
+    document.getElementById("message").innerHTML="You are a premium user"
+
+   }
+
+
+
+
+
+})
+
+
+
 
 
 

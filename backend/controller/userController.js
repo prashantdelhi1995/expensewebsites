@@ -7,8 +7,8 @@ const bcrypt = require("bcrypt");
 const jwt=require("jsonwebtoken");
 
 
-function generateAccessToken(id, email) {
-    return jwt.sign({ userId: id, email: email }, "secretKey");
+function generateAccessToken(id, email, isPremiumUser) {
+    return jwt.sign({ userId: id, email: email, isPremiumUser:isPremiumUser }, "secretKey");
   }
 
  const SignupController=async(req,res,next)=>{
@@ -54,7 +54,7 @@ const postUserLogin=async(req,res,next)=>{
               return res.status(200).json({
                 success: true,
                 message: "Login Successful!",
-                token: generateAccessToken(user.id, user.email)
+                token: generateAccessToken(user.id, user.email, user.isPremiumUser)
               
               });
             } else {
