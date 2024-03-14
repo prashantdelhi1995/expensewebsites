@@ -5,75 +5,22 @@ const sequelize= require("../util/database")
 const Signup= require("../modal/signup")
 const Expense= require("../modal/expense")
 
-module.exports.getleaderboard=async (req,res,next)=>{
+module.exports.getleaderboard = async (req, res, next) => {
+  try {
+      const t = await sequelize.transaction();
 
-try{
- const userLeaderBoardDetails = await Signup.findAll({
-  attributes: ['name', 'totalspend'],
-  order: [['totalspend', 'DESC']]
-})
+      const userLeaderBoardDetails = await Signup.findAll({
+          attributes: ['name', 'totalspend'],
+          order: [['totalspend', 'DESC']],
+          transaction: t
+      });
 
-   res.status(200).json(userLeaderBoardDetails)
-  
-  
-  
-} catch(err){
-  res.status(400).json(err)
-}
+      await t.commit();
 
+      res.status(200).json(userLeaderBoardDetails);
+  } catch (err) {
+      if (t) await t.rollback(); // Rollback transaction if an error occurs
+      res.status(400).json(err);
+  }
+};
 
-
-
-
-    // Expense.findAll({
-    //     attributes: [
-    //       [sequelize.fn("sum", sequelize.col("amount")), "totalExpense"],
-    //       [sequelize.col("signup.name"), "name"],
-    //     ],
-    //     group: ["SignUpId"],
-    //     include: [
-    //       {
-    //         model: Signup,
-    //         attributes: [],
-    //       },
-    //     ],
-    //     order: [[sequelize.fn("sum", sequelize.col("amount")), "DESC"]],
-    //   })   .then((expenses) => {
-    //     console.log("start",expenses," end")
-    //     const result = expenses.map((expense) => ({
-    //       name: expense.getDataValue("name"),
-    //       amount: expense.getDataValue("totalExpense"),
-    //     }));
-    //     console.log(result)
-    //     res.send(JSON.stringify(result));
-    //   })
-    //   .catch((err) => console.log(err));
-
-
-
-
-
-    //     const userAggregatedExpenses={}
-//     expenses.forEach((expense)=>{
-//         if(userAggregatedExpenses[expense.SignUpId]){
-//             userAggregatedExpenses[expense.SignUpId]+=expense.Amount
-//         }
-//         else{
-//             userAggregatedExpenses[expense.SignUpId]=expense.Amount
-
-//         }
-//     })
-//     const userLeaderBoardDetails=[];
-//     users.forEach((user)=>{
-//         userLeaderBoardDetails.push({name:user.name, total_expense:userAggregatedExpenses[user.id]})
-// })
-// userLeaderBoardDetails.sort((a,b)=>b.total_expense-a.total_expense);
-   
-
-   
-   
-    res.status(200).json(userLeaderBoardDetails)
-    
-    
-
-}
