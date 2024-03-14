@@ -87,7 +87,7 @@ async function handleLeadorboard(event){
   console.log(res.data)
   res.data.forEach((expenseDetails)=>{
     const name=  expenseDetails.name;
-  const totalExpense= expenseDetails.amount
+  const totalExpense= expenseDetails.totalspend
   const li=document.createElement("li");
   li.innerHTML=` ${name} ${totalExpense}`
  

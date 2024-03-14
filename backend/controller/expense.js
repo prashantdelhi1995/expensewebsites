@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const sequelize=require("../util/database")
 const Expense=require("../modal/expense")
 const middleware=require("../middleware/middleware")
+const Signup= require("../modal/signup")
 module.exports.getExpense= async (req, res) => {
     try {
       const expense = await Expense.findAll({where:{SignUpId:req.user.id}});
@@ -15,10 +16,19 @@ module.exports.getExpense= async (req, res) => {
 
   module.exports.postExpense= async (req, res) => {
     const { Amount, Description, categories } = req.body;
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",Amount,Description,categories)
+    
     try {
       console.log("value of id is >>>>>>>>>>>>>", req.user.id)
       const expense = await Expense.create({ Amount, Description, categories, SignUpId:req.user.id });
+      console.log(">>>>>totalspend",req.user.totalspend)
+      let total_expense= Number(req.user.totalspend) + Number(Amount) ;
+      console.log("***************",total_expense);
+           await  req.user.update( { totalspend: total_expense} );
+      
+    
+
+
+
       res.json({ message: 'User created successfully!', expense });
     } catch (error) {
       console.error('Error creating user:', error);

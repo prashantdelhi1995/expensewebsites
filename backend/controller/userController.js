@@ -13,7 +13,7 @@ function generateAccessToken(id, email, isPremiumUser) {
 
  const SignupController=async(req,res,next)=>{
     const {name,email,password}=req.body;
-    console.log("*********.......",name  ,email, password)
+    
     try {
 
         const existingUser = await Signup.findOne({ where: { email: email } });
@@ -37,7 +37,7 @@ function generateAccessToken(id, email, isPremiumUser) {
     }
 const postUserLogin=async(req,res,next)=>{
     const {email,password}=req.body;
-    console.log("*********......."  ,email, password)
+    
     try {
      
   

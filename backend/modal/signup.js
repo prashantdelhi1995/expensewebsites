@@ -18,6 +18,12 @@ const Signup = sequelize.define('SignUp', {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    totalspend: Sequelize.INTEGER,
+    thype: {
+      type: DataTypes.INTEGER,
+      defaultValue:0
+      
     }
   });
   module.exports=Signup;

@@ -6,29 +6,48 @@ const Signup= require("../modal/signup")
 const Expense= require("../modal/expense")
 
 module.exports.getleaderboard=async (req,res,next)=>{
-    Expense.findAll({
-        attributes: [
-          [sequelize.fn("sum", sequelize.col("amount")), "totalExpense"],
-          [sequelize.col("signup.name"), "name"],
-        ],
-        group: ["SignUpId"],
-        include: [
-          {
-            model: Signup,
-            attributes: [],
-          },
-        ],
-        order: [[sequelize.fn("sum", sequelize.col("amount")), "DESC"]],
-      })   .then((expenses) => {
-        console.log("start",expenses," end")
-        const result = expenses.map((expense) => ({
-          name: expense.getDataValue("name"),
-          amount: expense.getDataValue("totalExpense"),
-        }));
-        console.log(result)
-        res.send(JSON.stringify(result));
-      })
-      .catch((err) => console.log(err));
+
+try{
+ const userLeaderBoardDetails = await Signup.findAll({
+  attributes: ['name', 'totalspend'],
+  order: [['totalspend', 'DESC']]
+})
+
+   res.status(200).json(userLeaderBoardDetails)
+  
+  
+  
+} catch(err){
+  res.status(400).json(err)
+}
+
+
+
+
+
+    // Expense.findAll({
+    //     attributes: [
+    //       [sequelize.fn("sum", sequelize.col("amount")), "totalExpense"],
+    //       [sequelize.col("signup.name"), "name"],
+    //     ],
+    //     group: ["SignUpId"],
+    //     include: [
+    //       {
+    //         model: Signup,
+    //         attributes: [],
+    //       },
+    //     ],
+    //     order: [[sequelize.fn("sum", sequelize.col("amount")), "DESC"]],
+    //   })   .then((expenses) => {
+    //     console.log("start",expenses," end")
+    //     const result = expenses.map((expense) => ({
+    //       name: expense.getDataValue("name"),
+    //       amount: expense.getDataValue("totalExpense"),
+    //     }));
+    //     console.log(result)
+    //     res.send(JSON.stringify(result));
+    //   })
+    //   .catch((err) => console.log(err));
 
 
 
@@ -53,7 +72,7 @@ module.exports.getleaderboard=async (req,res,next)=>{
 
    
    
-    //res.status(200).json(userLeaderBoardDetails)
+    res.status(200).json(userLeaderBoardDetails)
     
     
 
