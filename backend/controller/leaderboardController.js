@@ -1,33 +1,59 @@
 
-
+const {Sequelize, DataTypes}= require("sequelize");
 const express=require("express");
 const sequelize= require("../util/database")
 const Signup= require("../modal/signup")
 const Expense= require("../modal/expense")
 
 module.exports.getleaderboard=async (req,res,next)=>{
-    const expenses= await Expense.findAll();
-    const users= await Signup.findAll();
-    const userAggregatedExpenses={}
-    expenses.forEach((expense)=>{
-        if(userAggregatedExpenses[expense.SignUpId]){
-            userAggregatedExpenses[expense.SignUpId]+=expense.Amount
-        }
-        else{
-            userAggregatedExpenses[expense.SignUpId]=expense.Amount
+    Expense.findAll({
+        attributes: [
+          [sequelize.fn("sum", sequelize.col("amount")), "totalExpense"],
+          [sequelize.col("signup.name"), "name"],
+        ],
+        group: ["SignUpId"],
+        include: [
+          {
+            model: Signup,
+            attributes: [],
+          },
+        ],
+        order: [[sequelize.fn("sum", sequelize.col("amount")), "DESC"]],
+      })   .then((expenses) => {
+        console.log("start",expenses," end")
+        const result = expenses.map((expense) => ({
+          name: expense.getDataValue("name"),
+          amount: expense.getDataValue("totalExpense"),
+        }));
+        console.log(result)
+        res.send(JSON.stringify(result));
+      })
+      .catch((err) => console.log(err));
 
-        }
-    })
-    const userLeaderBoardDetails=[];
-    users.forEach((user)=>{
-        userLeaderBoardDetails.push({name:user.name, total_expense:userAggregatedExpenses[user.id]})
-})
-userLeaderBoardDetails.sort((a,b)=>b.total_expense-a.total_expense);
+
+
+
+
+    //     const userAggregatedExpenses={}
+//     expenses.forEach((expense)=>{
+//         if(userAggregatedExpenses[expense.SignUpId]){
+//             userAggregatedExpenses[expense.SignUpId]+=expense.Amount
+//         }
+//         else{
+//             userAggregatedExpenses[expense.SignUpId]=expense.Amount
+
+//         }
+//     })
+//     const userLeaderBoardDetails=[];
+//     users.forEach((user)=>{
+//         userLeaderBoardDetails.push({name:user.name, total_expense:userAggregatedExpenses[user.id]})
+// })
+// userLeaderBoardDetails.sort((a,b)=>b.total_expense-a.total_expense);
    
 
    
    
-    res.status(200).json(userLeaderBoardDetails)
+    //res.status(200).json(userLeaderBoardDetails)
     
     
 
